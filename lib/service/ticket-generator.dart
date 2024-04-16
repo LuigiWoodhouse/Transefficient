@@ -1,7 +1,7 @@
-
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:uuid/uuid.dart';
+import 'view-all-ticket.dart';
 
 class UUIDGenerator extends StatefulWidget {
   @override
@@ -9,6 +9,7 @@ class UUIDGenerator extends StatefulWidget {
 }
 
 class _UUIDGeneratorState extends State<UUIDGenerator> {
+  List<String> uuidList = [];
   String uuid = '';
   bool isButtonDisabled = false;
   int countdown = 30;
@@ -17,6 +18,7 @@ class _UUIDGeneratorState extends State<UUIDGenerator> {
     if (!isButtonDisabled) {
       setState(() {
         uuid = Uuid().v4();
+        uuidList.add(uuid); // Add the generated UUID to the list
         isButtonDisabled = true;
         countdown = 30;
       });
@@ -42,6 +44,13 @@ class _UUIDGeneratorState extends State<UUIDGenerator> {
         });
       });
     }
+  }
+
+  void viewUUIDList() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => UUIDListPage(uuidList: uuidList)),
+    );
   }
 
   @override
@@ -95,6 +104,11 @@ class _UUIDGeneratorState extends State<UUIDGenerator> {
                 'You can get another ticket in $countdown seconds',
                 style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: viewUUIDList, // Navigate to UUID list page
+              child: Text('View All Tickets'),
             ),
           ],
         ),
